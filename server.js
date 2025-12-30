@@ -9,7 +9,7 @@ const PORT=process.env.PORT||3000;
 const cors=require('cors');
 app.use(cors({
   origin: ["http://localhost:5173",
-  "https://sde-wrapped-frontend.vercel.app"],
+  "https://sde-wrapped-frontend-ar1whg3vn-soumaditya-ghoshs-projects.vercel.app"],
   credentials: true
 }));
 app.use(
