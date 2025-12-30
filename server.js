@@ -20,7 +20,9 @@ app.use(
     cookie: { secure: false }, // true if using HTTPS
   })
 );
-
+app.get("/", (req, res) => {
+  res.send("SDE Wrapped backend is running 🚀");
+});
 
 
 app.get("/auth/github", (req, res) => {
