@@ -125,7 +125,7 @@ app.get("/auth/github/callback", async (req, res) => {
     // console.log(wrappedData);
     // res.json(wrappedData);
     req.session.wrappedData = wrappedData;
-    res.redirect("http://localhost:5173")
+    res.redirect("https://sde-wrapped-frontend.vercel.app")
     
 
     
