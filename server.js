@@ -8,16 +8,20 @@ const PORT=process.env.PORT||3000;
 
 const cors=require('cors');
 app.use(cors({
-  origin: ["http://localhost:5173",
-  "https://sde-wrapped-frontend.vercel.app"],
+  origin: ["https://sde-wrapped-frontend.vercel.app"],
   credentials: true
 }));
+app.set("trust proxy", 1); // Required for Render/Vercel to trust the HTTPS header
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "supersecretkey",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }, // true if using HTTPS
+    cookie: { 
+      secure: true,          // Must be true for HTTPS (Render)
+      sameSite: "none",      // Required for cross-site cookies (Vercel -> Render)
+      maxAge: 24 * 60 * 60 * 1000 
+    },
   })
 );
 app.get("/", (req, res) => {
