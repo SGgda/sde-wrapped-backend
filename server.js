@@ -8,7 +8,9 @@ const PORT=process.env.PORT||3000;
 
 const cors=require('cors');
 app.use(cors({
-  origin: ["https://sde-wrapped-frontend.vercel.app"],
+  origin: process.env.NODE_ENV === 'production' 
+    ? ["https://sde-wrapped-frontend.vercel.app"]
+    : ["http://localhost:5173"],
   credentials: true
 }));
 app.set("trust proxy", 1); // Required for Render/Vercel to trust the HTTPS header
@@ -18,8 +20,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: { 
-      secure: true,          // Must be true for HTTPS (Render)
-      sameSite: "none",      // Required for cross-site cookies (Vercel -> Render)
+      secure: process.env.NODE_ENV === 'production',  // true for HTTPS in production, false for local
+      sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",  // lax for local development
       maxAge: 24 * 60 * 60 * 1000 
     },
   })
@@ -129,7 +131,10 @@ app.get("/auth/github/callback", async (req, res) => {
     // console.log(wrappedData);
     // res.json(wrappedData);
     req.session.wrappedData = wrappedData;
-    res.redirect("https://sde-wrapped-frontend.vercel.app")
+    const redirectURL = process.env.NODE_ENV === 'production' 
+      ? "https://sde-wrapped-frontend.vercel.app"
+      : "http://localhost:5173";
+    res.redirect(redirectURL)
     
 
     
